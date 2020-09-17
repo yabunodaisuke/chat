@@ -1,0 +1,33 @@
+h1 {
+    color:white;
+    font-size: 40px;
+    text-align: center;
+    border-bottom: 1px solid green;
+    background-color: green;
+}
+
+textarea {
+    justify-content: center;
+    margin-top: 30px;
+    text-align: center;
+}
+main {
+    text-align: center;
+    padding-top: 20px;
+}
+
+/* 黒点を消す */
+ul {
+  list-style: none;
+}
+
+/* ボタンを中央に */
+body {
+    text-align: center;
+}
+/* 音声ボタン */
+button {
+  background-color: white;
+  border: none;
+}
+

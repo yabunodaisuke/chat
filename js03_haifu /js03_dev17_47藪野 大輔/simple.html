@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Chatアプリ</title>
+</head>
+<h1 >チャット</h1>
+<body>
+<!-- コンテンツ表示画面 -->
+<div>
+   <main>
+    <div id="output" class="ballon-left" style="height: 300px;overflow: auto;  "></div>
+    <!-- 入力箇所 -->
+    <div> <input type="" id="uname" placeholder="名前を入力" style="text-align: center; margin-top: 20px;"></div>
+    <textarea id="text" cols="40" rows="5" placeholder="メッセージを入力"></textarea>
+    </main>
+</div>
+   <container>
+    <div>
+        <!-- 音声入力 -->
+        <div>
+    <button id="send">送信</button>
+    <button id="button"><span><img src="..//js03/imgs/01.jpg" alt="" width="30" ></span></button> 
+    <div id="result" style="display: none;"></div>
+  </div>
+</div>
+</container>
+​ 
+</div>
+
+</div>
+<!--/ コンテンツ表示画面 -->
+​
+<!-- アイコン  -->
+
+<ul>
+  <li class="imgs" data-img="0"><img src="imgs/lovot.png"  width="100" style="display: none"></li>
+  <li class="imgs" data-img="1"><img src="imgs/tuku.jpg"  width="100" style="display: none;"></li>
+  <li class="imgs" data-img="2"><img src="imgs/caram.png" width="100" style="display: none;"></li>
+  <li></li>
+</ul>
+
+
+​
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- JQuery -->
+
+<!-- ​css追加 -->
+​<link rel="stylesheet" href="css/style.css">
+
+<!--** 以下Firebase **-->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+​
+<script>
+  
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const ref = firebase.database().ref(); //.ref()=ユニークキーを自動で振る
+// 音声データを保存する
+  const newPostRef = firebase.database().ref();
+
+// テキスト部分の背景色を変える
+$("#output").css('background-color','skyblue');
+
+
+
+//関数定義
+function send(){
+    var h = new Date();
+var year = h.getFullYear();
+var month = h.getMonth()+1;
+var week = h.getDay();
+var day = h.getDate();
+var hours = h.getHours();
+var minutes = h.getMinutes();
+var t = year + "年"+ month +"月" + day + "日" + hours + "時" + minutes + "分";
+console.log(t);
+
+    const uname = $("#uname").val();
+      const text  = $("#text").val();
+      const msg = {
+        uname:uname,
+        text:text,
+        time:t,
+        icon:d,
+    }
+        ref.push(msg); //set=決まった名前、 push=ユニーク
+}
+
+// アイコン処理 
+let d=0;
+const img =["lovot.png","tuku.jpg","caram.png"];
+$(".imgs").on("click",function(){
+  d =$(this).attr("data-img");
+  console.log(d);
+});
+
+
+// 文字を送信
+  $("#send").on("click",function(){
+    send();
+  });
+
+//受信処理
+ref.on("child_added", function(data){
+    const v = data.val();  //送信されたオブジェクトを取得
+    const k = data.key;    //ユニークキーの取得
+    const h = '<p><img src=imgs/'+img[v.icon]+' width = "50"><br>' + v.uname + '<br>' + v.text + '<br>' + v.time + '</p>';
+    $("#output").append(   );
+    $("#output").append( h );
+    // '<p>'+v.uname+'<br>'+v.text+'<br>'+v.time+'</p>';
+    $('#output').scrollTop($('#output')[0].scrollHeight);
+  
+});
+
+//イベント情報取得
+$("#text").on("keydown", function(e){
+   
+    if(e.keyCode == 13){
+        send();
+    }
+
+// 音声入力
+let button = document.getElementById('button');
+let speech = new webkitSpeechRecognition();
+let result = document.getElementById('result');
+speech.lang = 'ja-JP'; //入力言語
+speech.continuous = true; //連続的に音声認識
+speech.interimResuults = true; //入力途中でも音声認識
+
+// 音声データを取り、入力
+button.onclick = (data) => {
+  speech.start();
+  result.innerHTML = '音声入力を受け付けています、、、、'  //表示してない
+  speech.onresult = function (e) {
+    speech.stop();      
+    if (e.results[0].isFinal) {
+      var autotext =  e.results[0][0].transcript  //手入力と音声入力を継続的に入力
+      console.log(e);
+      output.innerHTML += '<div>'+ autotext +'</div>';
+      $('#output').scrollTop($('#output')[0].scrollHeight);
+    }
+   
+  } 
+}
+// 音声入力
+
+});
+
+</script>
+​
+​
+​
+​
+​
+​
+​
+</body>
+</html>
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
+​
